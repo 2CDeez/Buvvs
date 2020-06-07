@@ -1,0 +1,36 @@
+## Interface: 1.13
+## Version: 1.0.0 (r1)
+## Author: 2CDeez
+
+## Title: Buvvs AKA Cypris needs to worship me
+
+## Notes: Provides an easily customizable display for buffs, debuffs, and spell procs
+
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+## SavedVariables: BuvvsDB
+
+## OptionalDeps: Ace3, LibDebugLog-1.0, Masque
+
+## X-Revision: r1
+## X-Embeds: Ace3, LibDebugLog-1.0, Masque
+## X-Category: Buffs
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+BuvvsWidget-Buff.lua
+BuvvsContainer-Group.lua
+
+Locales\Locales.xml
+
+Buvvs.lua
+Options.lua
+Prototype.lua
+Buffs.lua
+Debuffs.lua
+Procs.lua
+Combo.lua
+Profile.lua

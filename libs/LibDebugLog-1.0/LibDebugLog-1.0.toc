@@ -1,0 +1,17 @@
+## Interface: 30000
+## Title: Lib: DebugLog-1.0
+## Notes: Library providing simple debug logging.
+## Author: Adirelle
+## X-eMail: adirelle@tagada-team.net
+## Version: @project-version@ 
+## X-Date: @project-date-iso@
+## X-Category: Library
+## X-License: GPL v2 or later
+## SavedVariables: LibDebugLog10PersitenceDB
+
+LibStub\LibStub.lua
+CallbackHandler-1.0\CallbackHandler-1.0.xml
+
+LibDebugLog-1.0\lib.xml
+
+Persistence.lua
