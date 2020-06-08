@@ -1,4 +1,4 @@
-## Interface: 1.13
+## Interface: 113
 ## Version: 1.0.0 (r1)
 ## Author: 2CDeez
 
@@ -31,6 +31,7 @@ Options.lua
 Prototype.lua
 Buffs.lua
 Debuffs.lua
-Procs.lua
-Combo.lua
+Weapons.lua
+##Procs.lua
+##Combo.lua
 Profile.lua

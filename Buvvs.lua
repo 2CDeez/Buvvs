@@ -67,8 +67,8 @@ local function InitAuraArray()
 end
 
 local function UpdateAura( id, aura, filter, now)
-	name, rank, texture, count, debuffType, duration, expiration, unitCaster, isStealable, consolidate, spellID = UnitAura( PlayerFrame.unit, id, filter)
-	local timeLeft = getglobal("Duration") or nil
+	name, texture, count, debuffType, duration, expiration, unitCaster, isStealable, consolidate, spellID = UnitAura( PlayerFrame.unit, id, filter)
+	local timeLeft = name and expiration and (expiration - now) or nil
 	
 	aura.id      = id
 	aura.filter  = filter
@@ -91,22 +91,27 @@ local function UpdateWaepon( id, enchant, timeLeft, charges)
 	timeLeft    = enchant and timeLeft and (timeLeft / 1000)
 	local aura = auras.weapon[id]
 	aura.id       = id
-	aura.name     = enchant and tostring( id) or nil
+	aura.name     = enchant and  tostring(id) or nil
 	aura.count    = charges 
 	aura.texture  = enchant and GetInventoryItemTexture( PlayerFrame.unit, 15 + id) 
 	aura.timeLeft = timeLeft and (timeLeft > 0) and timeLeft or nil
 end
 
 local function UpdateEnchant()
-	if PlayerFrame.unit or PlayerFrame.unit == "player" then
-		local mainEnchant, mainTimeLeft, mainCharges, offEnchant, offTimeLeft, offCharges, thrEnchant, thrTimeLeft, thrCharges = GetWeaponEnchantInfo()
-		UpdateWaepon( 1, mainEnchant, mainTimeLeft, mainCharges)
-		UpdateWaepon( 2, offEnchant,  offTimeLeft,  offCharges)
+	
+	-- local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantId = GetWeaponEnchantInfo()
+	
+	if PlayerFrame.unit or PlayerFrame.unit == "player"and hasMainHandEnchant and hasOffHandEnchant then
+		local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantId = GetWeaponEnchantInfo()
+		
+		
+		UpdateWaepon( 1, mainHandEnchantID, mainHandExpiration, mainHandCharges)
+		UpdateWaepon( 2, offHandEnchantId,  offHandExpiration,  offHandCharges)
 		UpdateWaepon( 3, thrEnchant,  thrTimeLeft,  thrCharges)
 	else
 		UpdateWaepon( 1, nil, nil, nil)
 		UpdateWaepon( 2, nil, nil, nil)
-		UpdateWaepon( 3, nil, nil, nil)
+		-- UpdateWaepon( 3, nil, nil, nil)
 	end
 end
 
@@ -167,8 +172,8 @@ function Addon:OnInitialize()
 		MasqueGroup = Masque:Group("Buvvs", "Buffs");
 		MasqueGroup = Masque:Group("Buvvs", "Debuffs");
 		MasqueGroup = Masque:Group("Buvvs", "Enchants"); -- TODO: Remove, as weapon enchants aren't a thing anymore (rogue poisons = regular buff)
-		MasqueGroup = Masque:Group("Buvvs", "Procs"); 
-		MasqueGroup = Masque:Group("Buvvs", "Combos") ;
+		-- MasqueGroup = Masque:Group("Buvvs", "Procs"); 
+		-- MasqueGroup = Masque:Group("Buvvs", "Combos") ;
 	end
 
 end
@@ -181,7 +186,7 @@ function Addon:OnEnable()
 	self:SecureHook( "BuffFrame_UpdateAllBuffAnchors", "OnUpdateBuffs")
 	self:SecureHook( "DebuffButton_UpdateAnchors", "OnUpdateDebuff")
 	self:SecureHook( "AuraButton_UpdateDuration", "OnUpdateDuration")
-	self:SecureHookScript( TemporaryEnchantFrame, "OnUpdate", "OnUpdateEnchantFrame")
+	self:SecureHook( "TemporaryEnchantFrame_OnUpdate", "OnUpdateEnchantFrame")
 	self:Print( self.version, "loaded")
 end
 
@@ -190,7 +195,7 @@ function Addon:OnDisable()
 	self:Unhook( "BuffFrame_UpdateAllBuffAnchors")
 	self:Unhook( "DebuffButton_UpdateAnchors")
 	self:Unhook( "AuraButton_UpdateDuration")
-	self:Unhook( TemporaryEnchantFrame, "OnUpdate")
+	self:Unhook( "TemporaryEnchantFrame", "OnUpdate")
 end
 
 function Addon:OnUpdateBuffs()

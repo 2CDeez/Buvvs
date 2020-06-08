@@ -81,8 +81,8 @@ function Module:OnModuleInitialize()
 end
 
 function Module:OnModuleEnable()
-	--self:ACTIVE_TALENT_GROUP_CHANGED()
-	--self:RegisterEvent( "ACTIVE_TALENT_GROUP_CHANGED")
+	self:ACTIVE_TALENT_GROUP_CHANGED()
+	self:RegisterEvent( "ACTIVE_TALENT_GROUP_CHANGED")
 	self:RegisterEvent( "UPDATE_SHAPESHIFT_FORM")
 end
 
